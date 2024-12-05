@@ -1,1 +1,2 @@
 Primer archivo de pruebas de git
+Estoy empezando a entender Git!
