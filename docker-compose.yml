@@ -25,3 +25,4 @@ services:
       - 9093:80
     depends_on:
       - mariadb
+  apache:
