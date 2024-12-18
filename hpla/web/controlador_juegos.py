@@ -65,7 +65,6 @@ def obtener_juego_por_id(id):
         code=500
     return juegojson,code
 
-
 def eliminar_juego(id):
     try:
         conexion = obtener_conexion()
