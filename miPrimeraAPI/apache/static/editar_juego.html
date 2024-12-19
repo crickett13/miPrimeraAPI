@@ -20,7 +20,7 @@
                 method: 'GET'
             };
 
-            fetch("/juego/"+id, requestOptions)
+            fetch("/api/juego/"+id, requestOptions)
                 .then(response => response.json())
                 .then(result => pintarJuego(result))
                 .catch(error => {
@@ -54,7 +54,7 @@
                 body: datos
             };
 
-            fetch("/juegos", requestOptions)
+            fetch("/api/juegos", requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     if (result.status == "OK"){

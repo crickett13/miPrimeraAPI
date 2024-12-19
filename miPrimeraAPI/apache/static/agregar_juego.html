@@ -27,7 +27,7 @@
                 body: datos
             };
 
-            fetch("/juegos", requestOptions)
+            fetch("/api/juegos", requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     if (result.status == "OK"){

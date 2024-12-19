@@ -33,7 +33,7 @@
                 method: 'GET'
             };
 
-            fetch("/juegos", requestOptions)
+            fetch("/api/juegos", requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     if (result.status){
@@ -52,7 +52,7 @@
                 method: 'DELETE'
             };
 
-            fetch("/juegos/"+id, requestOptions)
+            fetch("/api/juegos/"+id, requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     if (result.status == "OK"){
@@ -71,7 +71,7 @@
             var requestOptions = {
                 method: 'GET'
             };
-            fetch("/logout", requestOptions)
+            fetch("/api/logout", requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     if (result.status == "OK"){

@@ -17,7 +17,7 @@
                 body: formData
             };
 
-            fetch("/upload", requestOptions)
+            fetch("/api/upload", requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     if (result.status == "OK"){
@@ -38,7 +38,7 @@
                 method: 'GET',
             };
 
-            fetch("/ver/" + document.getElementById("nombreArchivo").value, requestOptions)
+            fetch("/api/ver/" + document.getElementById("nombreArchivo").value, requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     if (result.status == "OK"){
