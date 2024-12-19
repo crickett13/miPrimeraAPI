@@ -15,11 +15,13 @@
             let descripcion=document.getElementById("descripcion").value;
             let precio=document.getElementById("precio").value;
             let foto=document.getElementById("foto").value;
+            let tipo=document.getElementById("tipo").value;
             let datos=JSON.stringify({
                 "nombre":nombre,
                 "descripcion":descripcion,
                 "precio": precio,
-                "foto":foto
+                "foto":foto,
+                "tipo":tipo
             });
             var requestOptions = {
                 method: 'POST',
@@ -72,6 +74,8 @@
                 <input required type="text" class="input" placeholder="Nombre" name="nombre" id="nombre">
                 <label for="descripcion">Descripción</label>
                 <input required type="text" class="input" placeholder="Descripción" name="descripcion" id="descripcion">
+                <label for="tipo">tipo</label>
+                <input required type="text" class="input" placeholder="tipo" name="tipo" id="tipo">
                 <label for="precio">Precio</label>
                 <input required type="number" class="input" placeholder="Precio" name="precio" id="precio">
                 <label for="foto">Foto</label>

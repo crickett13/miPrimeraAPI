@@ -7,7 +7,7 @@ import sys
 from funciones_auxiliares import Encoder
 import controlador_usuario
 
-@app.route("/login",methods=['POST'])
+@app.route("/api/login",methods=['POST'])
 def login():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
@@ -21,7 +21,7 @@ def login():
         code=401
     return json.dumps(ret), code
 
-@app.route("/registro",methods=['POST'])
+@app.route("/api/registro",methods=['POST'])
 def registro():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
@@ -37,7 +37,7 @@ def registro():
     return json.dumps(ret), code
 
 
-@app.route("/logout",methods=['GET'])
+@app.route("/api/logout",methods=['GET'])
 def logout():
     session.clear()
     return json.dumps({"status":"OK"}),200

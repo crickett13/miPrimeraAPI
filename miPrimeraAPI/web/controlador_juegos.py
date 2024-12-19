@@ -2,12 +2,12 @@ from __future__ import print_function
 from bd import obtener_conexion
 import sys
 
-def insertar_juego(nombre, descripcion, precio,foto):
+def insertar_juego(nombre, descripcion, precio, foto, tipo):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("INSERT INTO juegos(nombre, descripcion, precio,foto) VALUES (%s, %s, %s,%s)",
-                       (nombre, descripcion, precio,foto))
+            cursor.execute("INSERT INTO juegos(nombre, descripcion, precio, foto, tipo) VALUES (%s, %s, %s,%s,%s)",
+                       (nombre, descripcion, precio, foto, tipo))
             if cursor.rowcount == 1:
                 ret={"status": "OK" }
             else:
@@ -28,13 +28,14 @@ def convertir_juego_a_json(juego):
     d['descripcion'] = juego[2]
     d['precio'] = juego[3]
     d['foto'] = juego[4]
+    d['tipo'] = juego[5]
     return d
 
 def obtener_juegos():
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT id, nombre, descripcion, precio,foto FROM juegos")
+            cursor.execute("SELECT id, nombre, descripcion, precio, foto, tipo FROM juegos")
             juegos = cursor.fetchall()
             juegosjson=[]
             if juegos:
@@ -53,8 +54,8 @@ def obtener_juego_por_id(id):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            #cursor.execute("SELECT id, nombre, descripcion, precio,foto FROM juegos WHERE id = %s", (id,))
-            cursor.execute("SELECT id, nombre, descripcion, precio,foto FROM juegos WHERE id =" + id)
+            cursor.execute("SELECT id, nombre, descripcion, precio, foto, tipo FROM juegos WHERE id = %s", (id,))
+            #cursor.execute("SELECT id, nombre, descripcion, precio,foto, tipo FROM juegos WHERE id =" + id)
             juego = cursor.fetchone()
             if juego is not None:
                 juegojson = convertir_juego_a_json(juego)
@@ -87,7 +88,7 @@ def actualizar_juego(id, nombre, descripcion, precio, foto):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("UPDATE juegos SET nombre = %s, descripcion = %s, precio = %s, foto=%s WHERE id = %s",
+            cursor.execute("UPDATE juegos SET nombre = %s, descripcion = %s, precio = %s, foto=%s, tipo=%s WHERE id = %s",
                        (nombre, descripcion, precio, foto,id))
             if cursor.rowcount == 1:
                 ret={"status": "OK" }
