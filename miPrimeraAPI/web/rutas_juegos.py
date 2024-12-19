@@ -3,10 +3,7 @@ import json
 import decimal
 from __main__ import app
 import controlador_juegos
-
-class Encoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, decimal.Decimal): return float(obj)
+from funciones_auxiliares import Encoder
 
 @app.route("/juegos",methods=["GET"])
 def juegos():
