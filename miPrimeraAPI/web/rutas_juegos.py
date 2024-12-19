@@ -8,7 +8,7 @@ class Encoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, decimal.Decimal): return float(obj)
 
-@app.route("/juego",methods=["GET"])
+@app.route("/juegos",methods=["GET"])
 def juegos():
     juegos,code= controlador_juegos.obtener_juegos()
     return json.dumps(juegos, cls = Encoder),code
@@ -18,7 +18,7 @@ def juego_por_id(id):
     juego,code = controlador_juegos.obtener_juego_por_id(id)
     return json.dumps(juego, cls = Encoder),code
 
-@app.route("/juego",methods=["POST"])
+@app.route("/juegos",methods=["POST"])
 def guardar_juego():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
@@ -29,12 +29,12 @@ def guardar_juego():
         code=401
     return json.dumps(ret), code
 
-@app.route("/juego/<id>", methods=["DELETE"])
+@app.route("/juegos/<id>", methods=["DELETE"])
 def eliminar_juego(id):
     ret,code=controlador_juegos.eliminar_juego(id)
     return json.dumps(ret), code
 
-@app.route("/juego", methods=["PUT"])
+@app.route("/juegos", methods=["PUT"])
 def actualizar_juego():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
