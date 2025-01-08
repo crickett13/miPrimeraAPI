@@ -5,7 +5,8 @@ CREATE TABLE juegos(
     nombre VARCHAR(255) NOT NULL,
     descripcion VARCHAR(255) NOT NULL,
     precio DECIMAL(9,2) NOT NULL,
-	foto VARCHAR(255)
+	foto VARCHAR(255),
+    tipo VARCHAR(255) NOT NULL
 );
 CREATE TABLE usuarios(
 	usuario VARCHAR(100) NOT NULL PRIMARY KEY,

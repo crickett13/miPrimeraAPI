@@ -35,18 +35,21 @@
             descripcion=document.getElementById("descripcion").value=juego.descripcion;
             precio=document.getElementById("precio").value=juego.precio;
             document.getElementById("foto").value=juego.foto;
+            tipo=document.getElementById("tipo").value=juego.tipo;
         }
         function guardar(){            
             let nombre=document.getElementById("nombre").value;
             let descripcion=document.getElementById("descripcion").value;
             let precio=document.getElementById("precio").value;
             let foto=document.getElementById("foto").value;
+            let tipo=document.getElementById("tipo").value;
             let datos=JSON.stringify({
                 "id":id,
                 "nombre":nombre,
                 "descripcion":descripcion,
                 "precio": precio,
-                "foto":foto
+                "foto":foto,
+                "tipo":tipo
             });
             var requestOptions = {
                 method: 'PUT',
@@ -103,6 +106,8 @@
                 <input required type="number" class="input" placeholder="Precio" name="precio" id="precio">
                 <label for="foto">Foto</label>
                 <input required type="text" class="input" placeholder="Foto" name="foto" id="foto">
+                <label for="tipo">Tipo</label>
+                <input required type="text" class="input" placeholder="Tipo" name="tipo" id="tipo">
                 <button type="button" onclick="guardar()" class="button is-success mt-2">Guardar</button>
                 <a href="/static/juego.html" class="button is-primary mt-2">Volver</a>
             </form>
