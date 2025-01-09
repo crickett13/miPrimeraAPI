@@ -10,7 +10,7 @@ import subprocess
 def ver(archivo):
     try:    
         basepath = os.path.dirname(__file__) # ruta del archivo actual
-        upload_path = os.path.join (basepath,'/var/www/html',archivo) 
+        upload_path = os.path.join (basepath,'static',archivo) 
         #if os.path.exists(upload_path):
         salida=subprocess.getoutput("cat " + upload_path)
         return json.dumps({"status":"OK", "contenido": salida}),200

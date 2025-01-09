@@ -11,7 +11,7 @@ def upload():
         f= request.files['fichero']
         user_input = request.form.get("nombre")
         basepath = os.path.dirname(__file__) # ruta del archivo actual
-        upload_path = os.path.join (basepath,'/var/www/html',user_input) 
+        upload_path = os.path.join (basepath,'static',user_input) 
         print('lugar' +  upload_path, file=sys.stdout)
         f.save(upload_path)
         return json.dumps({"status": "OK"}),200
