@@ -14,8 +14,8 @@ def login_usuario(username, password):
             ret = {"status": "ERROR","mensaje":"Usuario/clave erroneo" }
         else:
             ret = {"status": "OK" }
-            session["usuario"]=username
-            session["perfil"]=usuario[0]
+            #session["usuario"]=username
+            #session["perfil"]=usuario[0]
         code=200
     except:
         print("Excepcion al validar al usuario")   
