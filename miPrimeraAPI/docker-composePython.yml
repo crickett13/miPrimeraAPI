@@ -33,7 +33,7 @@ services:
       DB_DATABASE: PEPS
       DB_HOST: mariadb
       DB_PORT: 3306
-      PORT: 8080
+      PORT: 8000
       HOST: 0.0.0.0
     ports:
       - 9094:8080
