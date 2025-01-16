@@ -2,6 +2,9 @@ from __future__ import print_function
 from bd import obtener_conexion
 import sys
 
+def calculariva(importe):
+    return importe*0.21
+
 def insertar_juego(nombre, descripcion, precio, foto, tipo):
     try:
         conexion = obtener_conexion()
@@ -29,6 +32,7 @@ def convertir_juego_a_json(juego):
     d['precio'] = juego[3]
     d['foto'] = juego[4]
     d['tipo'] = juego[5]
+    d['iva'] = calculariva(juego[3])
     return d
 
 def obtener_juegos():

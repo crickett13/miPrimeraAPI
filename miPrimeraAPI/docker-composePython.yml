@@ -42,4 +42,4 @@ services:
   apache:
     build: ./apache
     ports:
-      - 9095:80
+      - 7777:80
