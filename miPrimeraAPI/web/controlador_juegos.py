@@ -32,7 +32,7 @@ def convertir_juego_a_json(juego):
     d['precio'] = juego[3]
     d['foto'] = juego[4]
     d['tipo'] = juego[5]
-    d['iva'] = calculariva(juego[3])
+    d['iva'] = calculariva(int(juego[3]))
     return d
 
 def obtener_juegos():
