@@ -1,9 +1,7 @@
 from __future__ import print_function
 from bd import obtener_conexion
 import sys
-
-def calculariva(importe):
-    return importe*0.21
+from funciones_auxiliares import calculariva
 
 def insertar_juego(nombre, descripcion, precio, foto, tipo):
     try:
