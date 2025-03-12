@@ -86,12 +86,12 @@ def eliminar_juego(id):
         code=500
     return ret,code
 
-def actualizar_juego(id, nombre, descripcion, precio, foto):
+def actualizar_juego(id, nombre, descripcion, precio, foto,tipo):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
             cursor.execute("UPDATE juegos SET nombre = %s, descripcion = %s, precio = %s, foto=%s, tipo=%s WHERE id = %s",
-                       (nombre, descripcion, precio, foto,id))
+                       (nombre, descripcion, precio, foto, tipo, id))
             if cursor.rowcount == 1:
                 ret={"status": "OK" }
             else:

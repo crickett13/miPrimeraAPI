@@ -2,7 +2,7 @@ version: '3'
 services:
   mariadb:
     image: mariadb
-    container_name: mariadb
+    container_name: mariadba6
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: example
@@ -12,20 +12,34 @@ services:
     volumes:
       - ./mariadb_data:/var/lib/mysql
       - ./Juegos.sql://docker-entrypoint-initdb.d/Juegos.sql
+
     user: mysql
-    ports:
-      - 3306:3306
   phpmyadmin:
     image: phpmyadmin
-    container_name: phpmyadmin
+    container_name: phpmyadmina6
     restart: always
     environment:
       - PMA_HOST=mariadb
     ports:
-      - 9093:80
+      - 7006:80
     depends_on:
       - mariadb
+  python:
+    build: .
+    container_name: pythona6
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: example
+      DB_DATABASE: PEPS
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      PORT: 8000
+      HOST: 0.0.0.0
+      SECRET_KEY: 'you-will-never-guess'
+      DEBUG: "false"
+    depends_on:
+        - mariadb
   apache:
     build: ./apache
     ports:
-      - 9095:80
+      - 6006:80

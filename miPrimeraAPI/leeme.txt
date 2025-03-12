@@ -16,3 +16,7 @@ Si se desea arrancar los contenedores de BBDD y de python hay que:
   Revisar el archivo web/variables.py y ocultar las líneas 3 a 8
   Lanzar docker-compose-copia.yaml
   Probar la aplicación en localhost:9094/static/index.html
+
+    
+  "' or 1=1 -- -
+  'or '1'='1
