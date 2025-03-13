@@ -10,7 +10,7 @@ services:
       MARIADB_USER_PASSWORD: 0traClave
       MARIADB_DATABASE: PEPS
     volumes:
-      - ./mariadb_data:/var/lib/mysql
+      - mariadb_dataa6:/var/lib/mysql
       - ./Juegos.sql://docker-entrypoint-initdb.d/Juegos.sql
 
     user: mysql
@@ -43,3 +43,6 @@ services:
     build: ./apache
     ports:
       - 6006:80
+      
+volumes:
+  mariadb_dataa6:
