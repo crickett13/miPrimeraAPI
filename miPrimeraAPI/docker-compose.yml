@@ -36,6 +36,7 @@ services:
       PORT: 8000
       HOST: 0.0.0.0
       SECRET_KEY: 'you-will-never-guess'
+      WTF_CSRF_SECRET_KEY: "mondongo"
       DEBUG: "false"
     depends_on:
         - mariadb

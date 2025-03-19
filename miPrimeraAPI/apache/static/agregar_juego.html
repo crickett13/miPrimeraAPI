@@ -9,6 +9,9 @@
     <script>
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+        if (sessionStorage.getItem("csrf_token")){
+			myHeaders.append("X-CSRFToken", sessionStorage.getItem("csrf_token"));
+		}
 
         function guardar(){
             let nombre=document.getElementById("nombre").value;
@@ -37,6 +40,9 @@
                         location.href="./juegos.html"
                     } else {
                         alert("El juego no ha podido ser guardado")
+                        if (result.status == "Forbidden"){
+                            location.href="/index.html";
+                        }
                     }
                 })
                 .catch(error => {

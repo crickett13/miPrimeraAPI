@@ -1,5 +1,7 @@
+from flask import session
 import json
 import decimal
+import datetime
 import html
 import bleach
 import bcrypt
@@ -50,3 +52,27 @@ def prepare_response_extra_headers(include_security_headers):
         }
         response_extra_headers.update(response_security_headers)
     return response_extra_headers
+
+
+def create_session(usuario,perfil):
+    session["usuario"]=usuario
+    session["perfil"]=perfil
+def delete_session():
+    session.clear()
+def validar_session_normal():
+    try:
+        if (session["usuario"] and session["usuario"]!=""):
+            return True
+        else:
+            return False
+    except:
+        return False
+def validar_session_admin():
+    try:
+        if (session["usuario"] and session["usuario"]!="" and session["perfil"]=="admin"):
+            return True
+        else:
+            return False
+    except:
+        return False
+    

@@ -32,6 +32,7 @@
                 .then(response => response.json())
                 .then(result => {
                     if (result.status=="OK"){
+                        sessionStorage.setItem("csrf_token",result.csrf_token);
                         location.href="juegos.html";
                     } else {
                         document.getElementsByClassName("error")[0].style.display="block";

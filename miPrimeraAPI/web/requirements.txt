@@ -1,6 +1,9 @@
 PyMySQL
-Flask==1.1.4
-markupsafe==2.0.1
+Flask-WTF==1.2.1
+Flask==2.2.3
+markupsafe==2.1.1
 bleach==3.2.2 
 python-dotenv
-bcrypt
+bcrypt==4.1.2
+Werkzeug==2.3.0
+Jinja2==3.0.3

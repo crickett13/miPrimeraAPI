@@ -10,6 +10,13 @@
         onload=function(){
             pedirJuegos();
         }
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        if (sessionStorage.getItem("csrf_token")){
+            myHeaders.append("X-CSRFToken", sessionStorage.getItem("csrf_token"));
+        }
+
         function pintarJuegos(lista){
             let tbody=document.getElementsByTagName("tbody")[0];
             tbody.innerHTML="";
@@ -32,7 +39,8 @@
         }
         function pedirJuegos(){
             var requestOptions = {
-                method: 'GET'
+                method: 'GET',
+                headers: myHeaders,
             };
 
             fetch("/api/juegos", requestOptions)
@@ -51,7 +59,8 @@
         }
         function eliminarJuego(id){
             var requestOptions = {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: myHeaders
             };
 
             fetch("/api/juegos/"+id, requestOptions)
@@ -62,16 +71,23 @@
                         pedirJuegos();
                     } else {
                         alert("El juego no ha podido ser eliminado")
+                        if (result.status == "Forbidden"){
+                            location.href="index.html";
+                        }
                     }
                 })
                 .catch(error => {
                     console.log('error', error);
                     alert("Se ha producido un error y el juego no ha podido ser eliminado")
+				    if (result.status == "Forbidden"){
+                        location.href="/index.html"
+                    }
                 });
         }
         function cerrarSesion(){
             var requestOptions = {
-                method: 'GET'
+                method: 'GET',
+                headers: myHeaders
             };
             fetch("/api/logout", requestOptions)
                 .then(response => response.json())

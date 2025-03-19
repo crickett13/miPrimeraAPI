@@ -1,5 +1,7 @@
 from __future__ import print_function
 from bd import obtener_conexion
+from __main__ import app
+from flask import escape
 import sys
 from funciones_auxiliares import calculariva
 
@@ -17,7 +19,7 @@ def insertar_juego(nombre, descripcion, precio, foto, tipo):
         conexion.commit()
         conexion.close()
     except:
-        print("Excepcion al insertar un juego", file=sys.stdout)
+        app.logger.info("Excepcion al insertar un juego")
         ret = {"status": "Failure" }
         code=500
     return ret,code
@@ -57,7 +59,6 @@ def obtener_juego_por_id(id):
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
             cursor.execute("SELECT id, nombre, descripcion, precio, foto, tipo FROM juegos WHERE id = %s", (id,))
-            #cursor.execute("SELECT id, nombre, descripcion, precio,foto, tipo FROM juegos WHERE id =" + id)
             juego = cursor.fetchone()
             if juego is not None:
                 juegojson = convertir_juego_a_json(juego)

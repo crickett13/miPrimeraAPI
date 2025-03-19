@@ -7,20 +7,34 @@ def login_usuario(username, password):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-                cursor.execute("SELECT perfil FROM usuarios WHERE usuario = %s",(username))
-                usuario = cursor.fetchone()
-        conexion.close()
-        if usuario is None:
-            ret = {"status": "ERROR","mensaje":"Usuario/clave erroneo" }
-        else:
-            passwordIn=usuario[1]
-            if (compare_password(password.encode("utf-8"),passwordIn.encode("utf-8"))):
-                ret = {"status": "OK" }
-                session["usuario"]=username
-                session["perfil"]=usuario[0]
+            cursor.execute("SELECT perfil FROM usuarios WHERE usuario = %s",(username))
+            usuario = cursor.fetchone()
+            if usuario is None:
+                ret = {"status": "ERROR","mensaje":"Usuario/clave erroneo" }
             else:
-                ret = {"status": "ERROR","mensaje":"Usuario/clave erroneo"}
-                code=200
+                perfil=usuario[0]
+                password=usuario[1]
+                numAccesosErroneos=usuario[2]
+                estado='activo'
+                current_date = dt.date.today()
+                hoy=current_date.strftime('%Y-%m-%d')
+                    
+                if (compare_password(password.encode("utf-8"),passwordIn.encode("utf-8"))):
+                    ret = {"status": "OK","csrf_token": generate_csrf()}
+                    app.logger.info("Acceso usuario %s correcto",username)
+                    create_session(username,perfil)
+                    numAccesosErroneos=0
+                else:
+                    app.logger.info("Acceso usuario %s incorrecto",username)
+                    numAccesosErroneos=numAccesosErroneos+1
+                    if (numAccesosErroneos>2):
+                        estado="bloqueado"
+                        app.logger.info("Usuario %s bloqueado",username)
+                    ret = {"status": "ERROR","mensaje":"Usuario/clave erroneo"}
+                cursor.execute("UPDATE usuarios SET numAccesosErroneos=%s, fechaUltimoAcceso=%s, estado=%s WHERE usuario = %s",(numAccesosErroneos,hoy,estado,username))
+                conexion.commit()
+                conexion.close()
+            code=200
     except:
         print("Excepcion al validar al usuario")   
         ret={"status":"ERROR"}
@@ -36,9 +50,10 @@ def registro_usuario(username, password, perfil):
             usuario = cursor.fetchone()
             if usuario is None:
                 passwordC=cipher_password(password);
-                cursor.execute("INSERT INTO usuarios(usuario,clave,perfil) VALUES(%s,%s,'normal')",(username,passwordC))
+                     cursor.execute("INSERT INTO usuarios(usuario,clave,perfil,estado,numAccesosErroneos) VALUES(%s,%s,'normal','activo',0)",(username,passwordC))
                 if cursor.rowcount == 1:
                     conexion.commit()
+                    app.logger.info("Nuevo usuario creado")
                     ret={"status": "OK" }
                     code=200
                 else:
@@ -46,7 +61,7 @@ def registro_usuario(username, password, perfil):
                     code=500
             else:
                 ret = {"status": "ERROR","mensaje":"Usuario/clave erroneo" }
-            code=200
+                code=200
         conexion.close()
     except:
         print("Excepcion al registrar al usuario")   
