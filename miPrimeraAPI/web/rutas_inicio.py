@@ -6,7 +6,7 @@ from bd import obtener_conexion
 import json
 import sys
 from funciones_auxiliares import Encoder,sanitize_input,cipher_password, compare_password,create_session,delete_session
-import controlador_usuarios
+import controlador_usuario
 import datetime as dt
 
 
@@ -15,12 +15,12 @@ def login():
     content_type = request.headers.get('Content-Type')
     ret={"status":"ERROR"}
     if (content_type == 'application/json'):
-        juego_json = request.json
-        if "username" in juego_json and "password" in juego_json:
-            username = sanitize_input(juego_json['username'])
-            password = sanitize_input(juego_json['password'])
+        login_json = request.json
+        if "username" in login_json and "password" in login_json:
+            username = sanitize_input(login_json['username'])
+            password = sanitize_input(login_json['password'])
             if isinstance(username, str) and isinstance(password, str) and len(username) < 50 and len(password) < 50:
-                    respuesta,code= controlador_usuarios.login_usuario(username,password)
+                    respuesta,code= controlador_usuario.login_usuario(username,password)
             else:
                 respuesta={"status":"Bad parameters"}
                 code=401
@@ -30,20 +30,20 @@ def login():
     else:
         ret={"status":"Bad request"}
         code=401
-    response= make_response(json.dumps(respuesta, cls=Encoder), status=code, mimetype="application/json")
+    response= make_response(json.dumps(respuesta, cls=Encoder), code)
     return response
 
 @app.route("/api/registro",methods=['POST'])
 def registro():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
-        juego_json = request.json
+        login_json = request.json
         if "username" in login_json and "password" in login_json:
-            username = sanitize_input(juego_json['username'])
-            password = sanitize_input(juego_json['password'])
-            perfil = sanitize_input(juego_json['profile'])
+            username = sanitize_input(login_json['username'])
+            password = sanitize_input(login_json['password'])
+            perfil = sanitize_input(login_json['profile'])
             if isinstance(username, str) and isinstance(password, str) and len(username) < 50 and len(password) < 50:
-                respuesta,code= controlador_usuarios.login_usuario(username,password,perfil)
+                respuesta,code= controlador_usuario.registro_usuario(username,password,perfil)
             else:
                 respuesta={"status":"Bad parameters"}
                 code=401
@@ -53,7 +53,7 @@ def registro():
     else:
         ret={"status":"Bad request"}
         code=401
-    response= make_response(json.dumps(respuesta, cls=Encoder), status=code, mimetype="application/json")
+    response= make_response(json.dumps(respuesta, cls=Encoder), code)
     return response
 
 @app.route("/api/logout",methods=['GET'])

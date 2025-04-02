@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EJEMPLO APP WEB CON CRUD</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    <style>
+        .oculto{
+            display: none;
+        }
+    </style>
     <script>
         onload=function(){
             pedirJuegos();
@@ -15,6 +20,17 @@
         myHeaders.append("Content-Type", "application/json");
         if (sessionStorage.getItem("csrf_token")){
             myHeaders.append("X-CSRFToken", sessionStorage.getItem("csrf_token"));
+        }
+
+        var perfil="normal";
+        onload=function() {
+            if (sessionStorage.getItem("perfil")) {
+                perfil=sessionStorage.getItem("perfil")
+                if (perfil=="admin") {
+                    document.getElementById("enlaceAgregar").classList.remove("oculto");
+                }
+            }
+            pedirJuegos();
         }
 
         function pintarJuegos(lista){
@@ -46,7 +62,7 @@
             fetch("/api/juegos", requestOptions)
                 .then(response => response.json())
                 .then(result => {
-                    if (result.status){
+                    if (result.status=="ERROR" || result.status=="Forbidden" ){
                         location.href="index.html";
                     } else {
                         pintarJuegos(result);
@@ -102,7 +118,6 @@
                     console.log('error', error);
                     alert("Se ha producido un error y no se ha podido cerrar sesión")
                 });
-
         }
     </script>
 </head>
@@ -132,7 +147,7 @@
         <div class="columns">
             <div class="column">
                 <h3 class="is-size-3">Juegos</h3>
-                <a href="./agregar_juego.html" class="button is-success">Agregar</a>
+                <a id="enlaceAgregar" href="./agregar_juego.html" class="button is-success oculto">Agregar</a>
                 <table class="table">
                     <thead>
                         <tr>

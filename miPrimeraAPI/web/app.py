@@ -1,11 +1,9 @@
 import os
-from flask import Flask
+from flask import Flask, request, make_response
+import json
+from logging.config import dictConfig
 from flask_wtf.csrf import CSRFProtect    #en la parte superior
-import rutas_inicio
-import rutas_upload
-import rutas_verfichero
-import rutas_juegos
-from funciones_auxiliares import prepare_response_extra_headers
+from funciones_auxiliares import prepare_response_extra_headers, Encoder
 
 app = Flask(__name__)
 app.config.from_pyfile('settings.py')
@@ -46,16 +44,20 @@ dictConfig(
 
 #Configuración de las sesiones con cookies
 app.config.update(PERMANENT_SESSION_LIFETIME=600)
-app.config.update( SESSION_COOKIE_SECURE=True,   SESSION_COOKIE_HTTPONLY=True,   SESSION_COOKIE_SAMESITE='Lax',)
+#app.config.update( SESSION_COOKIE_SECURE=True, SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE='Lax',)
+app.config.update( SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE='Lax',)
 
 @app.errorhandler(500)
 def server_error(error):
     app.logger.exception('An exception occurred during a request.')
-    return 'Internal Server Error', 500
+    respuesta={"status":"Error"}
+    code=500
+    return make_response(json.dumps(respuesta, cls=Encoder), code)
 
 @app.before_request
 def csrf_protect():
-    if not request.path.startswith("/login") and not request.path.startswith("/registro"):
+    app.logger.info("La petición es %s", request.path)
+    if not request.path.startswith("/api/login") and not request.path.startswith("/api/registro"):
         csrf.protect()
 
 #Configuración de la cabecera
@@ -73,6 +75,11 @@ def logAfterRequest(response):
     )
     response.headers.extend(extra_headers)
     return response
+
+import rutas_inicio
+import rutas_upload
+import rutas_verfichero
+import rutas_juegos
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT'))

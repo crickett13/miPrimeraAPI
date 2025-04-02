@@ -1,4 +1,7 @@
 CREATE DATABASE IF NOT EXISTS PEPS;
+CREATE USER 'agente'@'%' IDENTIFIED BY '0traClave';
+GRANT ALL PRIVILEGES ON PEPS.* TO 'agente'@'%';
+FLUSH PRIVILEGES;
 USE PEPS;
 CREATE TABLE juegos(
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -16,4 +19,4 @@ CREATE TABLE usuarios(
     numAccesosErroneos INTEGER,
     fechaUltimoAcceso DATE
 );
-INSERT INTO `usuarios` (`usuario`, `clave`, `perfil`,`estado`, `numAccesosErroneos`,`fechaUltimoAcceso`) VALUES ('root', '$2b$10$JJdnLnCjYmNYpGQ8OJVUD.UmKx2jspOYnXOI9rZm5I9DX5GLYNUP6', 'admin', 'activo', 0, '2022-03-01 00:00');
+INSERT INTO `usuarios` (`usuario`, `clave`, `perfil`,`estado`, `numAccesosErroneos`,`fechaUltimoAcceso`) VALUES ('root', '$2b$10$hJtLt4u0SqSf.h3S5Uuev.nu98ARhn.6SpvFCYbc1eeynJmy81cmK', 'admin', 'activo', 0, '2022-03-01 00:00');

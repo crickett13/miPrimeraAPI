@@ -62,7 +62,7 @@ def guardar_juego():
                     ret={"status":"Bad request pf"}
                     code=401 
             if (code == 200):
-                ret,code=controlador_juegos.insertar_juego(nombre,descripcion,precio,foto)
+                ret,code=controlador_juegos.insertar_juego(nombre,descripcion,precio,foto,tipo)
         else:
             ret={"status":"Bad request"}
             code=401

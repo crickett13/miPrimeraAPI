@@ -5,45 +5,64 @@ services:
     container_name: mariadba6
     restart: always
     environment:
-      MARIADB_ROOT_PASSWORD: example
-      MARIADB_USER: agente
-      MARIADB_USER_PASSWORD: 0traClave
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MARIADB_DATABASE: PEPS
     volumes:
       - mariadb_dataa6:/var/lib/mysql
-      - ./Juegos.sql://docker-entrypoint-initdb.d/Juegos.sql
-
+      - ./Juegos.sql:/docker-entrypoint-initdb.d/Juegos.sql
     user: mysql
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmina6
     restart: always
     environment:
+      - PMA_ARBITRARY: 1
       - PMA_HOST=mariadb
     ports:
       - 7006:80
+    liks:
+      - mariadb
     depends_on:
       - mariadb
   python:
     build: .
     container_name: pythona6
+    env_file: .env
     environment:
-      DB_USERNAME: root
-      DB_PASSWORD: example
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: PEPS
       DB_HOST: mariadb
       DB_PORT: 3306
       PORT: 8000
       HOST: 0.0.0.0
-      SECRET_KEY: 'you-will-never-guess'
-      WTF_CSRF_SECRET_KEY: "mondongo"
+      SECRET_KEY: ${SECRET_KEY}
+      WTF_CSRF_SECRET_KEY: ${WTF_CSRF_SECRET_KEY}
       DEBUG: "false"
+    volumes:
+      - ./logapi/:/app/logs
     depends_on:
         - mariadb
   apache:
     build: ./apache
     ports:
       - 6006:80
+      - 6016:443
+    depends_on:
+      - python
+    links:
+      - python
+    volumes:
+      - ./logwaf:/var/log/apache2
+secrets:
+  db_root_user:
+    file: ./secretos/db_root_user.txt
+  db_root_password:
+    file: ./secretos/db_root_password.txt
+  db_user_usermane:
+    file: ./secretos/db_user_usermane.txt
+  db_user_password:
+    file: ./secretos/db_user_password.txt
       
 volumes:
   mariadb_dataa6:
