@@ -11,16 +11,17 @@ services:
       - mariadb_dataa6:/var/lib/mysql
       - ./Juegos.sql:/docker-entrypoint-initdb.d/Juegos.sql
     user: mysql
+    secrets:
+      - db_root_password
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmina6
     restart: always
     environment:
-      - PMA_ARBITRARY: 1
       - PMA_HOST=mariadb
     ports:
       - 7006:80
-    liks:
+    links:
       - mariadb
     depends_on:
       - mariadb
@@ -42,7 +43,7 @@ services:
     volumes:
       - ./logapi/:/app/logs
     depends_on:
-        - mariadb
+      - mariadb
   apache:
     build: ./apache
     ports:

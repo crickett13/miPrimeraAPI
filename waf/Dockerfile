@@ -10,7 +10,7 @@ RUN apt install -y libapache2-mod-security2 openssl
 COPY apache2.conf /etc/apache2/apache2.conf
 COPY ports.conf /etc/apache2/ports.conf
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY ./cliente/ /var/www/html
+COPY ./static/ /var/www/html
 
 # Habilitar https
 COPY ./default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
