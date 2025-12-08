@@ -1,4 +1,4 @@
-FROM python:3.8.18
+FROM python:3.14.1
 RUN mkdir /app
 WORKDIR /app
 ADD ./web .
